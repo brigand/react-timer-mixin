@@ -1,0 +1,12 @@
+{
+  "name": "react-timer-mixin",
+  "version": "0.0.1",
+  "description": "A Timer Mixin for React.js Components",
+  "main": "dist/timer-mixin.js",
+  "keywords": [
+    "react",
+    "mixin"
+  ],
+  "author": "Adam Ellsworth",
+  "license": "MIT"
+}
