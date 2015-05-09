@@ -70,11 +70,7 @@ var Timer = {
 
             this.tick();
         }.bind(this), 1000);
-    },
-
-    logTimerMixin: function () {
-        console.log(this.state);
-    },
+    }
 };
 
 module.exports = Timer;
