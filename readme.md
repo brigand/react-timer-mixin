@@ -1,3 +1,10 @@
+### description
+
+- Starting the timer: `this.timerStart()`
+- Stopping the timer: `this.timerStop()`
+
+---
+
 ### defaults
 
     TIMEOUT = 5; // seconds
@@ -16,6 +23,15 @@ var SomeComponent = React.createClass({
     mixins: [TimerMixin],
 
     // propTypes, getInitialState, etc.
+
+
+    /*
+        Initializing the Timer
+     */
+    _someFunc: function () {
+        this.timerStart();
+    },
+
 
     /**
      * timerCallback - Not required, but available to all Components
