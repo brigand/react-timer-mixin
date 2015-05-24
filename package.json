@@ -5,6 +5,7 @@
   "main": "dist/timer-mixin.js",
   "keywords": [
     "react",
+    "react-component",
     "mixin"
   ],
   "author": "Adam Ellsworth",
