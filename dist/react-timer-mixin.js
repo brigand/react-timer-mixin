@@ -32,16 +32,17 @@ var Timer = {
             clearTimeout(this._react_timer_mixin.getTimer);
             this._react_timer_mixin.getTimer = null;
         }
-    }
+    },
     
-    componentWillUnmount(){
+    componentWillUnmount: function(){
         this.timerStop();
     }
 }
 
 var internal = {
     timerRestart: function () {
-        this._react_timer_mixin.status = 'start';
+        var timer = this._react_timer_mixin;
+        timer.status = 'start';
         timer.timeLeft = timer.timeout;
 
         // Only invoke callback if defined
