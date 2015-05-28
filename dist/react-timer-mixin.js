@@ -1,5 +1,3 @@
-var React = require('react');
-
 var TIMEOUT = 5;
 
 var Timer = {
