@@ -3,73 +3,78 @@ var React = require('react');
 var TIMEOUT = 5;
 
 var Timer = {
-
-    propTypes: {
-        status   : React.PropTypes.string,
-        timeLeft : React.PropTypes.number,
-        getTimer : React.PropTypes.object
-    },
-
-    getInitialState: function () {
-        return {
-            status   : 'start',
-            timeLeft : TIMEOUT,
-            getTimer : undefined
-        };
-    },
-
     componentWillMount: function() {
         if (!this.timerCallback)
             console.info("Timer Mixin notice: if defined in your component, 'timerCallback' will run every time the Timer is started or restarted.");
+        
+        this._react_timer_mixin = {
+            status   : 'start',
+            timeLeft : null,
+            getTimer : null,
+            timeout  : TIMEOUT
+        };
     },
 
-    timerStart: function () {
-        this.state.status = 'start';
-        this.tick();
+    timerStart: function (seconds) {
+        var timer = this._react_timer_mixin;
+        
+        timer.status = 'start';
+        timer.timeout = seconds || TIMEOUT;
+        timer.timeLeft = timer.timeLeft || timer.timeout;
+        
+        internal.tick.call(this);
 
         // Only invoke callback if defined
         if (this.timerCallback) this.timerCallback();
     },
 
     timerStop: function () {
-        this.state.status = 'stop';
-    },
+        this._react_timer_mixin.status = 'stop';
+        if (this._react_timer_mixin.getTimer) {
+            clearTimeout(this._react_timer_mixin.getTimer);
+            this._react_timer_mixin.getTimer = null;
+        }
+    }
+    
+    componentWillUnmount(){
+        this.timerStop();
+    }
+}
 
+var internal = {
     timerRestart: function () {
-        this.state.status = 'start';
-        this.state.timeLeft = TIMEOUT;
+        this._react_timer_mixin.status = 'start';
+        timer.timeLeft = timer.timeout;
 
         // Only invoke callback if defined
         if (this.timerCallback) this.timerCallback();
     },
 
     decrementTimeleft: function () {
-        this.state.timeLeft -= 1;
+        this._react_timer_mixin.timeLeft -= 1;
     },
-
 
     timerIsRunning: function () {
-        return (this.state.getTimer === undefined) ? false : true;
+        return this._react_timer_mixin.getTimer !== null;
     },
 
-
-
     tick: function () {
-        this.state.getTimer = setTimeout(function () {
+        var timer = this._react_timer_mixin;
+        timer.getTimer = setTimeout(function () {
 
-            if (this.state.status === 'stop') {
-                this.state.getTimer = undefined;
+            if (timer.status === 'stop') {
+                timer.getTimer = undefined;
                 return;
             }
 
-            if (this.state.timeLeft <= 1) {
-                this.timerRestart();
+            if (timer.timeLeft <= 1) {
+                internal.timerRestart.call(this);
             } else {
-                this.decrementTimeleft();
+                internal.decrementTimeleft.call(this);
             }
 
-            this.tick();
-        }.bind(this), 1000);
+            internal.tick.call(this);
+        }.bind(this), Math.min(1, timer.timeLeft) * 1000);
     }
 };
 
