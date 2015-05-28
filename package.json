@@ -8,6 +8,13 @@
     "react-component",
     "mixin"
   ],
+  "scripts": {
+      "test": "tape test/*.js"
+  },
   "author": "Adam Ellsworth",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "react-mixin": "^1.2.3",
+    "tape": "^4.0.0"
+  }
 }
